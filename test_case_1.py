@@ -34,15 +34,12 @@ def test_case_1():
 
         pomo = PomodoroTimer(driver)
 
-        configured_valued = pomo.configure_time(1)
+        configured_valued = pomo.configure_pomo_time(1)
 
-        pomo_mode = driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/mode_text2")
-        mode_text = pomo_mode.text
-        mode_text = mode_text.replace("POMODORO", "")
-        mode_text = mode_text.replace("MIN", "")
-        mode_text = mode_text.replace(" ", "")
+        pomo.set_mode("POMODORO")
+        mode_time = pomo.get_time_mode("POMODORO")
 
-        assert configured_valued == mode_text
+        assert configured_valued == mode_time
 
     finally:
         driver.quit()

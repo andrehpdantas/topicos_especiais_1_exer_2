@@ -41,7 +41,7 @@ def test_case_3():
 
         pomo = PomodoroTimer(driver)
     
-        pomo.configure_time(1)
+        pomo.configure_pomo_time(1)
 
         pomo.start_stop_timer()
         time_start = pomo.get_time_left()

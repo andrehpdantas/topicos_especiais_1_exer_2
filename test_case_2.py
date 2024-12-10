@@ -25,24 +25,21 @@ options.load_capabilities({
 	"appium:connectHardwareKeyboard": True
 })
 
-def test_case_1():
+def test_case_2():
     '''
-    CT01 Teste Capacidade de alteração de minutos
+    CT02 Teste Capacidade de alteração de pausas
     '''
     try:
         driver = webdriver.Remote("http://127.0.0.1:4723", options=options)
 
         pomo = PomodoroTimer(driver)
 
-        configured_valued = pomo.configure_time(1)
+        configured_valued = pomo.configure_short_break(1)
 
-        pomo_mode = driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/mode_text2")
-        mode_text = pomo_mode.text
-        mode_text = mode_text.replace("POMODORO", "")
-        mode_text = mode_text.replace("MIN", "")
-        mode_text = mode_text.replace(" ", "")
+        pomo.set_mode("SHORT BREAK")
+        mode_time = pomo.get_time_mode("SHORT BREAK")
 
-        assert configured_valued == mode_text
+        assert configured_valued == mode_time
 
     finally:
         driver.quit()

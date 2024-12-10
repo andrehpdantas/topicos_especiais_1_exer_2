@@ -22,13 +22,10 @@ class PomodoroTimer:
     def __init__(self, driver):
         self.driver = driver
   
-    def configure_time(self, m):
+    def configure_pomo_time(self, m):
     
         el1 = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/clock_settings")
         el1.click()
-
-        pomodoro_duration_input_val = self.driver.find_element(by=AppiumBy.XPATH, value="//android.widget.TextView[@resource-id=\"com.pomodrone.app:id/number_input_value\"]")
-        pomodoro_duration_value = int(pomodoro_duration_input_val.text)
 
         el2 = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/settings_pomodoro_duration")
         el2.click()
@@ -36,15 +33,18 @@ class PomodoroTimer:
         eplus = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/switcher_plus")
         eminus = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/switcher_minus")
 
+        pomodoro_duration_value = 0
+
         while pomodoro_duration_value != m:
+            pomodoro_duration_input_val = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/switcher_value")
+            pomodoro_duration_value = int(pomodoro_duration_input_val.text)
+        
             if m > pomodoro_duration_value:
                 eplus.click()
             elif m < pomodoro_duration_value:
                 eminus.click()
             
-            pomodoro_duration_input_val = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/switcher_value")
-            pomodoro_duration_value = int(pomodoro_duration_input_val.text)
-        
+            
         el6 = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/switcher_close")
         el6.click()
 
@@ -57,6 +57,77 @@ class PomodoroTimer:
         time.sleep(2)
 
         return configured_time
+    
+    def configure_short_break(self, m):
+    
+        el1 = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/clock_settings")
+        el1.click()
+
+
+        el2 = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/settings_break_duration")
+        el2.click()
+
+        time.sleep(1)
+
+        eplus = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/switcher_plus")
+        eminus = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/switcher_minus")
+
+        short_break_duration_value = 0
+
+        while short_break_duration_value != m:
+
+            pomodoro_duration_input_val = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/switcher_value")
+            short_break_duration_value = int(pomodoro_duration_input_val.text)
+        
+            if m > short_break_duration_value:
+                eplus.click()
+            elif m < short_break_duration_value:
+                eminus.click()
+            
+
+        el6 = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/switcher_close")
+        el6.click()
+
+        settings_pomodoro_duration_input_val = self.driver.find_element(by=AppiumBy.XPATH, value="//android.widget.TextView[@resource-id=\"com.pomodrone.app:id/number_input_value\"]")
+        configured_time = settings_pomodoro_duration_input_val.text
+
+        el7 = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/settings_back")
+        el7.click()
+
+        time.sleep(2)
+
+        return configured_time
+
+    def set_mode(self, mode):
+
+        assert mode == "POMODORO" or mode == "SHORT BREAK" or mode == "LONG BREAK"
+
+        pomo_mode = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/pomodorosModeWidget")
+ 
+        pomo_desc = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/mode_text2")
+        time.sleep(1)
+
+        if pomo_desc.text.find(mode) != -1:
+            return
+        
+        while pomo_desc.text.find(mode) == -1:
+            pomo_mode.click()
+            pomo_desc = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/mode_text2")
+            time.sleep(1)
+
+    def get_time_mode(self, mode):
+        assert mode == "POMODORO" or mode == "SHORT BREAK" or mode == "LONG BREAK"
+
+        self.set_mode(mode)
+
+        pomo_mode = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/mode_text2")
+        mode_text = pomo_mode.text
+        mode_text = mode_text.replace(mode, "")
+        mode_text = mode_text.replace("MIN", "")
+        mode_text = mode_text.replace(" ", "")
+
+        return mode_text
+        
 
     def start_stop_timer(self):
         start_stop_btn = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/clockView")
