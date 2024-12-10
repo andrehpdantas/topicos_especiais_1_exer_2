@@ -32,6 +32,8 @@ def test_case_4():
         driver = webdriver.Remote("http://127.0.0.1:4723", options=options)
 
         pomo = PomodoroTimer(driver)
+
+        pomo.set_mode("POMODORO")
     
         pomo.configure_pomo_time(1)
 

@@ -104,7 +104,7 @@ class PomodoroTimer:
 
         pomo_mode = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/pomodorosModeWidget")
  
-        pomo_desc = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/mode_text2")
+        pomo_desc = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/mode_text1")
         time.sleep(1)
 
         if pomo_desc.text.find(mode) != -1:
@@ -112,7 +112,7 @@ class PomodoroTimer:
         
         while pomo_desc.text.find(mode) == -1:
             pomo_mode.click()
-            pomo_desc = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/mode_text2")
+            pomo_desc = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/mode_text1")
             time.sleep(1)
 
     def get_time_mode(self, mode):
@@ -120,7 +120,7 @@ class PomodoroTimer:
 
         self.set_mode(mode)
 
-        pomo_mode = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/mode_text2")
+        pomo_mode = self.driver.find_element(by=AppiumBy.ID, value="com.pomodrone.app:id/mode_text1")
         mode_text = pomo_mode.text
         mode_text = mode_text.replace(mode, "")
         mode_text = mode_text.replace("MIN", "")

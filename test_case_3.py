@@ -43,6 +43,10 @@ def test_case_3():
     
         pomo.configure_pomo_time(1)
 
+        time.sleep(1)
+
+        pomo.set_mode("POMODORO")
+
         pomo.start_stop_timer()
         time_start = pomo.get_time_left()
 
@@ -51,6 +55,8 @@ def test_case_3():
             print(f'Active State: {pomo.get_clock_active_state()}')
             time.sleep(1)
             i = i -1
+
+        time.sleep(5)
         
         active_state = pomo.get_clock_active_state()
         assert active_state == "SHORT BREAK"
